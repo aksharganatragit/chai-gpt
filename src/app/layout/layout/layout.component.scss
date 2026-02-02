@@ -1,0 +1,33 @@
+/* ROOT SHELL */
+.app-shell {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+/* SIDEBAR (width controlled internally by sidebar component) */
+app-sidebar {
+  flex-shrink: 0;
+}
+
+/* RIGHT SIDE */
+.main-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0; // VERY IMPORTANT for flex overflow
+}
+
+/* HEADER */
+app-header {
+  flex-shrink: 0;
+  height: 56px;
+}
+
+/* MAIN CONTENT (ONLY SCROLL CONTAINER) */
+.content {
+  flex: 1;
+  overflow-y: auto;
+  background: var(--bg-primary);
+}

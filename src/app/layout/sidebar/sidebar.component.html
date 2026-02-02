@@ -1,0 +1,27 @@
+<div class="sidebar" [class.collapsed]="collapsed">
+  <!-- COLLAPSED -->
+  <div *ngIf="collapsed" class="collapsed-bar">
+    <button class="icon-btn" (click)="toggle()">☕</button>
+    <button class="icon-btn" (click)="newChat()">＋</button>
+  </div>
+
+  <!-- EXPANDED -->
+  <div *ngIf="!collapsed" class="expanded">
+    <div class="header">
+      <span class="title">☕ ChaiGPT</span>
+      <button class="icon-btn" (click)="toggle()">←</button>
+    </div>
+
+    <button class="new-chat" (click)="newChat()">＋ New Chai</button>
+
+    <div class="topics">
+      <div
+        class="topic"
+        *ngFor="let topic of topics"
+        (click)="selectTopic(topic.prompt)"
+      >
+        {{ topic.title }}
+      </div>
+    </div>
+  </div>
+</div>

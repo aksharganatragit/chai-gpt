@@ -1,0 +1,170 @@
+.chat-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  position: relative; // 🔥 REQUIRED for modal positioning
+}
+
+/* ===============================
+   CHAT CONTENT (NO SCROLL HERE)
+   =============================== */
+.chat-container {
+  max-width: 760px;
+  width: 100%;
+  margin: 0 auto;
+  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  min-height: calc(100vh - 56px - 72px);
+}
+
+/* ===============================
+   MESSAGE BUBBLES
+   =============================== */
+.message {
+  max-width: 80%;
+  padding: var(--space-md);
+  border-radius: var(--radius-lg);
+  line-height: 1.4;
+  font-size: 0.95rem;
+  word-wrap: break-word;
+}
+
+.message.chai {
+  background: var(--bg-secondary);
+  align-self: flex-start;
+}
+
+.message.user {
+  background: #4f46e5;
+  color: white;
+  align-self: flex-end;
+}
+
+/* ===============================
+   TYPING INDICATOR
+   =============================== */
+.typing-indicator {
+  align-self: flex-start;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  padding-left: var(--space-sm);
+  font-style: italic;
+  opacity: 0.85;
+}
+
+/* ===============================
+   READ MORE LINK
+   =============================== */
+.read-more {
+  margin-top: 6px;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+.read-more:hover {
+  text-decoration: underline;
+  opacity: 1;
+}
+
+/* ===============================
+   INPUT BAR (STICKY)
+   =============================== */
+.input-bar {
+  position: sticky;
+  bottom: 0;
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border-color);
+  padding: var(--space-md);
+  display: flex;
+  gap: var(--space-sm);
+  z-index: 5;
+}
+
+/* TEXTAREA – NEVER COLLAPSE */
+textarea {
+  flex: 1;
+  min-height: 44px; // 🔥 prevents shrinking
+  max-height: 140px;
+  resize: none;
+  padding: var(--space-sm);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  font-size: 1rem;
+  line-height: 1.4;
+  font-family: inherit;
+  overflow-y: auto;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+/* SEND BUTTON */
+button {
+  flex-shrink: 0;
+  padding: 0 var(--space-md);
+  border-radius: var(--radius-md);
+  border: none;
+  background: #4f46e5;
+  color: white;
+  cursor: pointer;
+}
+
+/* ===============================
+   CONFIRM NEW CHAT MODAL
+   =============================== */
+.confirm-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 20;
+}
+
+.confirm-box {
+  background: var(--bg-primary);
+  padding: 18px;
+  border-radius: 10px;
+  width: 260px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.confirm-box p {
+  margin: 0;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.subtext {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.actions {
+  margin-top: 14px;
+  display: flex;
+  gap: 8px;
+}
+
+.actions button {
+  flex: 1;
+  padding: 6px;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  cursor: pointer;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+.actions .danger {
+  background: #d94c4c;
+  color: white;
+  border: none;
+}

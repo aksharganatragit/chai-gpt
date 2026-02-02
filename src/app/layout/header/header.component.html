@@ -1,0 +1,26 @@
+<header class="header">
+  <div class="left">
+    <span class="Q‍☕title">☕ ChaiGPT</span>
+  </div>
+
+  <div class="right">
+    <!-- Spice selector -->
+    <select
+      class="spice-select"
+      (change)="setSpice($any($event.target).value)"
+    >
+      <option value="mild">🌶️ Mild</option>
+      <option value="medium" selected>🌶️🌶️ Medium</option>
+      <option value="kadak">🌶️🌶️🌶️ Kadak</option>
+    </select>
+
+    <!-- Theme toggle -->
+    <button
+      class="theme-btn"
+      (click)="theme.toggleTheme()"
+      title="Toggle theme"
+    >
+      🌓
+    </button>
+  </div>
+</header>

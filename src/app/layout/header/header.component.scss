@@ -1,0 +1,43 @@
+.header {
+  height: 56px;
+  padding: 0 var(--space-md);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+}
+
+/* Left side */
+.left {
+  font-weight: 600;
+  font-size: 1.05rem;
+}
+
+/* Right controls */
+.right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+/* Spice dropdown */
+.spice-select {
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+/* Theme toggle button */
+.theme-btn {
+  border: 1px solid var(--border-color);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  padding: 6px 8px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 1rem;
+}

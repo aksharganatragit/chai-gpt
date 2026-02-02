@@ -1,0 +1,132 @@
+.sidebar {
+  height: 100vh;
+  background: var(--bg-secondary);
+  border-right: 1px solid var(--border-color);
+  transition: width 0.25s ease;
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
+}
+
+/* EXPANDED */
+.sidebar:not(.collapsed) {
+  width: 260px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* COLLAPSED */
+.sidebar.collapsed {
+  width: 56px;
+}
+
+/* COLLAPSED BAR */
+.collapsed-bar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 8px;
+  gap: 12px;
+}
+
+/* HEADER */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+}
+
+.title {
+  font-weight: 600;
+}
+
+/* ICON BUTTON */
+.icon-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+}
+
+/* NEW CHAT */
+.new-chat {
+  margin: 8px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  cursor: pointer;
+  text-align: left;
+}
+
+.new-chat:hover {
+  background: var(--bg-hover);
+}
+
+/* TOPICS */
+.topics {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 8px;
+}
+
+.topic {
+  padding: 6px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.topic:hover {
+  background: var(--bg-primary);
+}
+
+/* CONFIRM MODAL */
+.confirm-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.confirm-box {
+  background: var(--bg-primary);
+  padding: 16px;
+  border-radius: 8px;
+  width: 220px;
+  text-align: center;
+}
+
+.confirm-box p {
+  margin: 0;
+  font-weight: 600;
+}
+
+.subtext {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.actions {
+  margin-top: 12px;
+  display: flex;
+  gap: 8px;
+}
+
+.actions button {
+  flex: 1;
+  padding: 6px;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  cursor: pointer;
+}
+
+.actions .danger {
+  background: #d94c4c;
+  color: white;
+  border: none;
+}

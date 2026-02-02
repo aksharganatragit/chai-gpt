@@ -1,0 +1,59 @@
+<div class="chat-wrapper">
+  <div class="chat-container">
+    <div
+      *ngFor="let msg of messages"
+      class="message"
+      [class.user]="msg.sender === 'user'"
+      [class.chai]="msg.sender === 'chai'"
+    >
+      <!-- Message text -->
+      {{ msg.text }}
+
+      <!-- 🔗 Read more link (only for chai messages) -->
+      <div
+        *ngIf="msg.sender === 'chai' && msg.allowReadMore"
+        class="read-more"
+        (click)="openInChatGPT(msg.text)"
+      >
+        🔗 Read more →
+      </div>
+    </div>
+
+    <!-- Typing indicator -->
+    <div *ngIf="isTyping" class="typing-indicator">
+      ☕ chai ban rahi hai…
+    </div>
+
+    <!-- Scroll anchor -->
+    <div #bottomAnchor></div>
+  </div>
+
+  <form class="input-bar" (submit)="sendMessage(); $event.preventDefault()">
+    <textarea
+      [(ngModel)]="inputText"
+      name="chatInput"
+      placeholder="Bol bhai…"
+      rows="1"
+      autocomplete="off"
+      (input)="autoResize($event)"
+      (keydown)="handleKeydown($event)"
+    ></textarea>
+
+    <button type="submit">➤</button>
+  </form>
+</div>
+<div *ngIf="showConfirm" class="confirm-overlay">
+  <div class="confirm-box">
+    <p>Start a new chat?</p>
+    <span class="subtext">
+      This will clear your current conversation.
+    </span>
+
+    <div class="actions">
+      <button class="danger" (click)="confirmNewChat()">
+        Yes, start new
+      </button>
+      <button (click)="cancelNewChat()">Cancel</button>
+    </div>
+  </div>
+</div>
