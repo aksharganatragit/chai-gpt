@@ -130,3 +130,12 @@
   color: white;
   border: none;
 }
+@media (max-width: 767px) {
+  .sidebar {
+    width: 260px !important;
+  }
+
+  .sidebar.collapsed {
+    width: 260px;
+  }
+}

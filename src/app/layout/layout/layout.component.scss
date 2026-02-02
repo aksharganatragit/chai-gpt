@@ -1,33 +1,59 @@
-/* ROOT SHELL */
 .app-shell {
   display: flex;
-  height: 100vh;
-  width: 100vw;
+  height: 100dvh; // 🔥 mobile-safe viewport
+  width: 100%;
   overflow: hidden;
 }
 
-/* SIDEBAR (width controlled internally by sidebar component) */
-app-sidebar {
-  flex-shrink: 0;
-}
-
-/* RIGHT SIDE */
+/* MAIN AREA */
 .main-area {
   flex: 1;
   display: flex;
   flex-direction: column;
-  min-width: 0; // VERY IMPORTANT for flex overflow
+  min-width: 0;
 }
 
-/* HEADER */
-app-header {
-  flex-shrink: 0;
-  height: 56px;
-}
-
-/* MAIN CONTENT (ONLY SCROLL CONTAINER) */
+/* CONTENT = ONLY SCROLL */
 .content {
   flex: 1;
-  overflow-y: auto;
-  background: var(--bg-primary);
+  overflow: hidden;
+}
+
+/* MOBILE OVERLAY */
+.mobile-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 15;
+}
+
+/* DESKTOP */
+@media (min-width: 768px) {
+  app-sidebar {
+    position: relative;
+    width: 260px;
+    z-index: 10;
+  }
+
+  .mobile-overlay {
+    display: none;
+  }
+}
+
+/* MOBILE */
+@media (max-width: 767px) {
+  app-sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100dvh;
+    width: 260px;
+    transform: translateX(-100%);
+    transition: transform 0.25s ease;
+    z-index: 20;
+  }
+
+  app-sidebar.mobile-open {
+    transform: translateX(0);
+  }
 }

@@ -1,6 +1,15 @@
 <header class="header">
   <div class="left">
-    <span class="Q‍☕title">☕ ChaiGPT</span>
+    <!-- HAMBURGER (mobile only) -->
+    <button
+      class="icon-btn mobile-only"
+      (click)="menuClick.emit()"
+      aria-label="Open menu"
+    >
+      ☰
+    </button>
+
+    <span class="title">☕ ChaiGPT</span>
   </div>
 
   <div class="right">

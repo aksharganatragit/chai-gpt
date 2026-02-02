@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { TOPICS } from '../../core/data/topics';
@@ -14,21 +14,36 @@ import { ChatSessionService } from '../../core/services/chat-session.service';
 })
 export class SidebarComponent {
   topics: Topic[] = TOPICS;
-  collapsed = false;
 
-  constructor(private session: ChatSessionService) {}
+  collapsed = false;
+  isMobile = false;
+
+  constructor(private session: ChatSessionService) {
+    this.checkMobile();
+  }
+
+  @HostListener('window:resize')
+  checkMobile() {
+    this.isMobile = window.innerWidth < 768;
+
+    // 🔥 On mobile, NEVER allow collapsed rail
+    if (this.isMobile) {
+      this.collapsed = false;
+    }
+  }
 
   toggle() {
-    this.collapsed = !this.collapsed;
+    // desktop only
+    if (!this.isMobile) {
+      this.collapsed = !this.collapsed;
+    }
   }
 
   newChat() {
     this.session.requestNewChat();
-    this.collapsed = true;
   }
 
   selectTopic(prompt: string) {
     this.session.startWithTopic(prompt);
-    this.collapsed = true;
   }
 }
