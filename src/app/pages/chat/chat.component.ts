@@ -59,25 +59,17 @@ export class ChatComponent implements AfterViewInit, OnDestroy {
     const viewport = window.visualViewport;
     if (!viewport) return;
 
-    const update = () => {
-      const keyboardOffset =
-        window.innerHeight - viewport.height - viewport.offsetTop;
+   const update = () => {
+  const keyboardOffset =
+    window.innerHeight - viewport.height - viewport.offsetTop;
 
-      const offset = Math.max(keyboardOffset, 0);
+  const offset = Math.max(keyboardOffset, 0);
 
-      document.documentElement.style.setProperty(
-        '--keyboard-offset',
-        `${offset}px`
-      );
-
-      // 🔒 LOCK BODY SCROLL WHEN KEYBOARD OPEN
-      if (offset > 0) {
-        document.body.style.position = 'fixed';
-        document.body.style.width = '100%';
-      } else {
-        document.body.style.position = '';
-      }
-    };
+  document.documentElement.style.setProperty(
+    '--keyboard-offset',
+    `${offset}px`
+  );
+};
 
     viewport.addEventListener('resize', update);
     viewport.addEventListener('scroll', update);

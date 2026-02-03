@@ -18,7 +18,7 @@
   width: 100%;
   margin: 0 auto;
   padding: var(--space-lg);
-  padding-bottom: calc(96px + var(--keyboard-offset));
+ padding-bottom: calc(96px + var(--keyboard-offset));
   display: flex;
   flex-direction: column;
   gap: var(--space-md);
@@ -67,7 +67,11 @@
   position: fixed;
   left: 0;
   right: 0;
-  bottom: var(--keyboard-offset);
+  bottom: 0;
+
+  transform: translateY(calc(-1 * var(--keyboard-offset)));
+  transition: transform 0.12s ease-out;
+
   background: var(--bg-secondary);
   border-top: 1px solid var(--border-color);
   padding: var(--space-md);
@@ -108,7 +112,7 @@ button {
 @media (max-width: 640px) {
   .chat-container {
     padding: 12px;
-    padding-bottom: calc(96px + var(--keyboard-offset));
+     padding-bottom: calc(96px + var(--keyboard-offset));
   }
 
   .message {
