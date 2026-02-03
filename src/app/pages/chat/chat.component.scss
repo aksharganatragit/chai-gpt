@@ -1,16 +1,20 @@
+:root {
+  --keyboard-offset: 0px;
+}
+
 /* ===============================
    ROOT CHAT WRAPPER
    =============================== */
 .chat-wrapper {
   display: flex;
   flex-direction: column;
-  height: 100dvh; // 🔥 dynamic viewport (keyboard-aware)
+  height: 100dvh;
   position: relative;
   overflow: hidden;
 }
 
 /* ===============================
-   CHAT SCROLL AREA (ONLY SCROLLER)
+   CHAT SCROLL AREA
    =============================== */
 .chat-container {
   flex: 1;
@@ -18,7 +22,7 @@
   width: 100%;
   margin: 0 auto;
   padding: var(--space-lg);
-  padding-bottom: 96px; // 🔥 space for fixed input
+  padding-bottom: calc(96px + var(--keyboard-offset));
   display: flex;
   flex-direction: column;
   gap: var(--space-md);
@@ -58,13 +62,13 @@
 }
 
 /* ===============================
-   INPUT BAR (FIXED — NOT STICKY)
+   INPUT BAR (KEYBOARD AWARE)
    =============================== */
 .input-bar {
-  position: fixed; // 🔥 KEY FIX
-  bottom: 0;
+  position: fixed;
   left: 0;
   right: 0;
+  bottom: var(--keyboard-offset); // 🔥 MOVES WITH KEYBOARD
   background: var(--bg-secondary);
   border-top: 1px solid var(--border-color);
   padding: var(--space-md);
@@ -101,13 +105,11 @@ button {
   cursor: pointer;
 }
 
-/* ===============================
-   MOBILE TWEAKS
-   =============================== */
+/* MOBILE */
 @media (max-width: 640px) {
   .chat-container {
     padding: 12px;
-    padding-bottom: 96px;
+    padding-bottom: calc(96px + var(--keyboard-offset));
   }
 
   .message {

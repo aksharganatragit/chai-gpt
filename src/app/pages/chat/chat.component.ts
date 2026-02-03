@@ -6,6 +6,7 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { AfterViewInit } from '@angular/core';
 
 import { Message } from '../../core/models/message.model';
 import { ChaiEngineService } from '../../core/services/chai-engine.service';
@@ -18,13 +19,14 @@ import { ChatSessionService } from '../../core/services/chat-session.service';
   templateUrl: './chat.component.html',
   styleUrl: './chat.component.scss',
 })
-export class ChatComponent implements OnDestroy {
+export class ChatComponent implements AfterViewInit,OnDestroy {
   @ViewChild('bottomAnchor') bottomAnchor!: ElementRef<HTMLDivElement>;
 
   messages: Message[] = [];
   inputText = '';
   isTyping = false;
-
+private viewport: VisualViewport | null = null;
+private viewportListener?: () => void;
   showConfirm = false;
   private streamingInterval: any;
 
@@ -123,6 +125,23 @@ export class ChatComponent implements OnDestroy {
     el.style.height = 'auto';
     el.style.height = el.scrollHeight + 'px';
   }
+ngAfterViewInit() {
+  this.viewport = window.visualViewport;
+
+  if (!this.viewport) return;
+
+  this.viewportListener = () => {
+    const keyboardHeight =
+      window.innerHeight - this.viewport!.height;
+
+    document.documentElement.style.setProperty(
+      '--keyboard-offset',
+      `${keyboardHeight}px`
+    );
+  };
+
+  this.viewport.addEventListener('resize', this.viewportListener);
+}
 
   private scrollToBottom() {
     setTimeout(() => {
@@ -139,8 +158,13 @@ export class ChatComponent implements OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.streamingInterval) {
-      clearInterval(this.streamingInterval);
-    }
+  if (this.streamingInterval) {
+    clearInterval(this.streamingInterval);
   }
+
+  if (this.viewport && this.viewportListener) {
+    this.viewport.removeEventListener('resize', this.viewportListener);
+  }
+}
+
 }
