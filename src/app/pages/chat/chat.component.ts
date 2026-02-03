@@ -2,11 +2,11 @@ import {
   Component,
   ViewChild,
   ElementRef,
+  AfterViewInit,
   OnDestroy,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { AfterViewInit } from '@angular/core';
 
 import { Message } from '../../core/models/message.model';
 import { ChaiEngineService } from '../../core/services/chai-engine.service';
@@ -19,16 +19,17 @@ import { ChatSessionService } from '../../core/services/chat-session.service';
   templateUrl: './chat.component.html',
   styleUrl: './chat.component.scss',
 })
-export class ChatComponent implements AfterViewInit,OnDestroy {
+export class ChatComponent implements AfterViewInit, OnDestroy {
   @ViewChild('bottomAnchor') bottomAnchor!: ElementRef<HTMLDivElement>;
 
   messages: Message[] = [];
   inputText = '';
   isTyping = false;
-private viewport: VisualViewport | null = null;
-private viewportListener?: () => void;
   showConfirm = false;
-  private streamingInterval: any;
+
+  private viewport: VisualViewport | null = null;
+  private viewportListener?: () => void;
+  private streamingInterval?: number;
 
   constructor(
     private chaiEngine: ChaiEngineService,
@@ -51,12 +52,65 @@ private viewportListener?: () => void;
     });
   }
 
+  /* ===============================
+     KEYBOARD HANDLING (FINAL)
+     =============================== */
+  ngAfterViewInit() {
+    const viewport = window.visualViewport;
+    if (!viewport) return;
+
+    const update = () => {
+      const keyboardOffset =
+        window.innerHeight - viewport.height - viewport.offsetTop;
+
+      const offset = Math.max(keyboardOffset, 0);
+
+      document.documentElement.style.setProperty(
+        '--keyboard-offset',
+        `${offset}px`
+      );
+
+      // 🔒 LOCK BODY SCROLL WHEN KEYBOARD OPEN
+      if (offset > 0) {
+        document.body.style.position = 'fixed';
+        document.body.style.width = '100%';
+      } else {
+        document.body.style.position = '';
+      }
+    };
+
+    viewport.addEventListener('resize', update);
+    viewport.addEventListener('scroll', update);
+
+    update();
+
+    this.viewport = viewport;
+    this.viewportListener = update;
+  }
+
+  ngOnDestroy() {
+    if (this.streamingInterval) {
+      clearInterval(this.streamingInterval);
+    }
+
+    if (this.viewport && this.viewportListener) {
+      this.viewport.removeEventListener('resize', this.viewportListener);
+      this.viewport.removeEventListener('scroll', this.viewportListener);
+    }
+
+    document.body.style.position = '';
+  }
+
+  /* ===============================
+     CHAT LOGIC
+     =============================== */
   sendMessage() {
     if (!this.inputText.trim()) return;
 
     this.session.markConversationStarted();
 
     const userInput = this.inputText;
+
     this.messages.push({
       id: crypto.randomUUID(),
       sender: 'user',
@@ -86,7 +140,7 @@ private viewportListener?: () => void;
     const words = text.split(' ');
     let i = 0;
 
-    this.streamingInterval = setInterval(() => {
+    this.streamingInterval = window.setInterval(() => {
       if (i >= words.length) {
         clearInterval(this.streamingInterval);
         this.isTyping = false;
@@ -125,27 +179,12 @@ private viewportListener?: () => void;
     el.style.height = 'auto';
     el.style.height = el.scrollHeight + 'px';
   }
-ngAfterViewInit() {
-  this.viewport = window.visualViewport;
-
-  if (!this.viewport) return;
-
-  this.viewportListener = () => {
-    const keyboardHeight =
-      window.innerHeight - this.viewport!.height;
-
-    document.documentElement.style.setProperty(
-      '--keyboard-offset',
-      `${keyboardHeight}px`
-    );
-  };
-
-  this.viewport.addEventListener('resize', this.viewportListener);
-}
 
   private scrollToBottom() {
-    setTimeout(() => {
-      this.bottomAnchor?.nativeElement.scrollIntoView({ behavior: 'smooth' });
+    requestAnimationFrame(() => {
+      this.bottomAnchor?.nativeElement.scrollIntoView({
+        behavior: 'smooth',
+      });
     });
   }
 
@@ -156,15 +195,4 @@ ngAfterViewInit() {
       '_blank'
     );
   }
-
-  ngOnDestroy() {
-  if (this.streamingInterval) {
-    clearInterval(this.streamingInterval);
-  }
-
-  if (this.viewport && this.viewportListener) {
-    this.viewport.removeEventListener('resize', this.viewportListener);
-  }
-}
-
 }
