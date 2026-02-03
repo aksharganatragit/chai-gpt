@@ -27,9 +27,9 @@ export class ChatComponent implements AfterViewInit, OnDestroy {
   isTyping = false;
   showConfirm = false;
 
-  private viewport: VisualViewport | null = null;
-  private viewportListener?: () => void;
-  private streamingInterval?: number;
+  private viewport?: VisualViewport;
+  private viewportHandler?: () => void;
+  private streamTimer?: number;
 
   constructor(
     private chaiEngine: ChaiEngineService,
@@ -37,11 +37,9 @@ export class ChatComponent implements AfterViewInit, OnDestroy {
   ) {
     this.session.actionStream$.subscribe(action => {
       if (action.type === 'new-chat') {
-        if (this.session.hasActiveConversation()) {
-          this.showConfirm = true;
-        } else {
-          this.resetChat();
-        }
+        this.session.hasActiveConversation()
+          ? (this.showConfirm = true)
+          : this.resetChat();
       }
 
       if (action.type === 'topic' && action.topicPrompt) {
@@ -53,68 +51,58 @@ export class ChatComponent implements AfterViewInit, OnDestroy {
   }
 
   /* ===============================
-     KEYBOARD HANDLING (FINAL)
+     KEYBOARD HANDLING (STABLE)
      =============================== */
   ngAfterViewInit() {
-    const viewport = window.visualViewport;
-    if (!viewport) return;
+    const vv = window.visualViewport;
+    if (!vv) return;
 
-   const update = () => {
-  const keyboardOffset =
-    window.innerHeight - viewport.height - viewport.offsetTop;
+    const update = () => {
+      const offset =
+        window.innerHeight - vv.height - vv.offsetTop;
 
-  const offset = Math.max(keyboardOffset, 0);
+      document.documentElement.style.setProperty(
+        '--keyboard-offset',
+        `${Math.max(offset, 0)}px`
+      );
+    };
 
-  document.documentElement.style.setProperty(
-    '--keyboard-offset',
-    `${offset}px`
-  );
-};
-
-    viewport.addEventListener('resize', update);
-    viewport.addEventListener('scroll', update);
-
+    vv.addEventListener('resize', update);
+    vv.addEventListener('scroll', update);
     update();
 
-    this.viewport = viewport;
-    this.viewportListener = update;
+    this.viewport = vv;
+    this.viewportHandler = update;
   }
 
   ngOnDestroy() {
-    if (this.streamingInterval) {
-      clearInterval(this.streamingInterval);
+    if (this.streamTimer) clearInterval(this.streamTimer);
+    if (this.viewport && this.viewportHandler) {
+      this.viewport.removeEventListener('resize', this.viewportHandler);
+      this.viewport.removeEventListener('scroll', this.viewportHandler);
     }
-
-    if (this.viewport && this.viewportListener) {
-      this.viewport.removeEventListener('resize', this.viewportListener);
-      this.viewport.removeEventListener('scroll', this.viewportListener);
-    }
-
-    document.body.style.position = '';
   }
 
   /* ===============================
-     CHAT LOGIC
+     CHAT FLOW
      =============================== */
   sendMessage() {
     if (!this.inputText.trim()) return;
 
     this.session.markConversationStarted();
 
-    const userInput = this.inputText;
+    const userText = this.inputText;
+    this.inputText = '';
 
     this.messages.push({
       id: crypto.randomUUID(),
       sender: 'user',
-      text: userInput,
+      text: userText,
       timestamp: new Date(),
     });
 
-    this.inputText = '';
     this.scrollToBottom();
-
-    const reply = this.chaiEngine.getReply(userInput);
-    this.streamReply(reply);
+    this.streamReply(this.chaiEngine.getReply(userText));
   }
 
   private streamReply(text: string) {
@@ -132,9 +120,9 @@ export class ChatComponent implements AfterViewInit, OnDestroy {
     const words = text.split(' ');
     let i = 0;
 
-    this.streamingInterval = window.setInterval(() => {
+    this.streamTimer = window.setInterval(() => {
       if (i >= words.length) {
-        clearInterval(this.streamingInterval);
+        clearInterval(this.streamTimer);
         this.isTyping = false;
         return;
       }
@@ -142,6 +130,28 @@ export class ChatComponent implements AfterViewInit, OnDestroy {
       msg.text += (i === 0 ? '' : ' ') + words[i++];
       this.scrollToBottom();
     }, 70);
+  }
+
+  /* ===============================
+     UI HELPERS
+     =============================== */
+  handleKeydown(e: KeyboardEvent) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      this.sendMessage();
+    }
+  }
+
+  autoResize(e: Event) {
+    const ta = e.target as HTMLTextAreaElement;
+    ta.style.height = 'auto';
+    ta.style.height = ta.scrollHeight + 'px';
+  }
+
+  private scrollToBottom() {
+    requestAnimationFrame(() =>
+      this.bottomAnchor?.nativeElement.scrollIntoView({ behavior: 'smooth' })
+    );
   }
 
   confirmNewChat() {
@@ -159,32 +169,8 @@ export class ChatComponent implements AfterViewInit, OnDestroy {
     this.session.clearConversation();
   }
 
-  handleKeydown(event: KeyboardEvent) {
-    if (event.key === 'Enter' && !event.shiftKey) {
-      event.preventDefault();
-      this.sendMessage();
-    }
-  }
-
-  autoResize(event: Event) {
-    const el = event.target as HTMLTextAreaElement;
-    el.style.height = 'auto';
-    el.style.height = el.scrollHeight + 'px';
-  }
-
-  private scrollToBottom() {
-    requestAnimationFrame(() => {
-      this.bottomAnchor?.nativeElement.scrollIntoView({
-        behavior: 'smooth',
-      });
-    });
-  }
-
   openInChatGPT(text: string) {
-    const prompt = `Continue this thought:\n\n${text}`;
-    window.open(
-      `https://chat.openai.com/?q=${encodeURIComponent(prompt)}`,
-      '_blank'
-    );
+    const q = encodeURIComponent(`Continue this thought:\n\n${text}`);
+    window.open(`https://chat.openai.com/?q=${q}`, '_blank');
   }
 }
