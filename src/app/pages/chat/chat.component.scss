@@ -4,9 +4,9 @@
 .chat-wrapper {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: 100dvh; // 🔥 dynamic viewport (keyboard-aware)
   position: relative;
-  overflow: hidden; // 🔥 prevents mobile ghost scroll
+  overflow: hidden;
 }
 
 /* ===============================
@@ -18,13 +18,14 @@
   width: 100%;
   margin: 0 auto;
   padding: var(--space-lg);
+  padding-bottom: 96px; // 🔥 space for fixed input
   display: flex;
   flex-direction: column;
   gap: var(--space-md);
-  overflow-y: auto; // 🔥 ONLY scroll container
+  overflow-y: auto;
 }
 
-/* EMPTY STATE (ChatGPT-style) */
+/* EMPTY STATE */
 .chat-container:empty::before {
   content: 'Ready when you are.';
   margin: auto;
@@ -57,44 +58,19 @@
 }
 
 /* ===============================
-   TYPING INDICATOR
-   =============================== */
-.typing-indicator {
-  align-self: flex-start;
-  font-size: 0.85rem;
-  color: var(--text-secondary);
-  font-style: italic;
-  opacity: 0.85;
-}
-
-/* ===============================
-   READ MORE LINK
-   =============================== */
-.read-more {
-  margin-top: 6px;
-  font-size: 0.75rem;
-  color: var(--text-secondary);
-  cursor: pointer;
-  opacity: 0.8;
-}
-
-.read-more:hover {
-  text-decoration: underline;
-  opacity: 1;
-}
-
-/* ===============================
-   INPUT BAR (STICKY BOTTOM)
+   INPUT BAR (FIXED — NOT STICKY)
    =============================== */
 .input-bar {
-  position: sticky;
+  position: fixed; // 🔥 KEY FIX
   bottom: 0;
+  left: 0;
+  right: 0;
   background: var(--bg-secondary);
   border-top: 1px solid var(--border-color);
   padding: var(--space-md);
   display: flex;
   gap: var(--space-sm);
-  z-index: 5;
+  z-index: 30;
 }
 
 /* TEXTAREA */
@@ -126,68 +102,12 @@ button {
 }
 
 /* ===============================
-   CONFIRM NEW CHAT MODAL
-   =============================== */
-.confirm-overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.45);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 20;
-}
-
-.confirm-box {
-  background: var(--bg-primary);
-  padding: 18px;
-  border-radius: 10px;
-  width: 260px;
-  text-align: center;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-}
-
-.confirm-box p {
-  margin: 0;
-  font-weight: 600;
-  font-size: 0.95rem;
-}
-
-.subtext {
-  display: block;
-  margin-top: 4px;
-  font-size: 0.75rem;
-  color: var(--text-secondary);
-}
-
-.actions {
-  margin-top: 14px;
-  display: flex;
-  gap: 8px;
-}
-
-.actions button {
-  flex: 1;
-  padding: 6px;
-  border-radius: 6px;
-  border: 1px solid var(--border-color);
-  cursor: pointer;
-  background: var(--bg-secondary);
-  color: var(--text-primary);
-}
-
-.actions .danger {
-  background: #d94c4c;
-  color: white;
-  border: none;
-}
-
-/* ===============================
    MOBILE TWEAKS
    =============================== */
 @media (max-width: 640px) {
   .chat-container {
     padding: 12px;
+    padding-bottom: 96px;
   }
 
   .message {
