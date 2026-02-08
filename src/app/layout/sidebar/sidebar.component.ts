@@ -18,6 +18,9 @@ export class SidebarComponent {
   collapsed = false;
   isMobile = false;
 
+  // Fun emoji icons for topics
+  private topicIcons = ['🎯', '💡', '🚀', '🎨', '📚', '⚡', '🌟', '🎭', '🔥', '💫'];
+
   constructor(private session: ChatSessionService) {
     this.checkMobile();
   }
@@ -26,14 +29,14 @@ export class SidebarComponent {
   checkMobile() {
     this.isMobile = window.innerWidth < 768;
 
-    // 🔥 On mobile, NEVER allow collapsed rail
+    // On mobile, NEVER allow collapsed rail
     if (this.isMobile) {
       this.collapsed = false;
     }
   }
 
   toggle() {
-    // desktop only
+    // Desktop only
     if (!this.isMobile) {
       this.collapsed = !this.collapsed;
     }
@@ -45,5 +48,10 @@ export class SidebarComponent {
 
   selectTopic(prompt: string) {
     this.session.startWithTopic(prompt);
+  }
+
+  // Get a fun icon for each topic
+  getTopicIcon(index: number): string {
+    return this.topicIcons[index % this.topicIcons.length];
   }
 }

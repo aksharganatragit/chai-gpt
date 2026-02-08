@@ -1,27 +1,74 @@
 <div class="sidebar" [class.collapsed]="collapsed">
-  <!-- COLLAPSED -->
+
+  <!-- COLLAPSED VIEW -->
   <div *ngIf="collapsed" class="collapsed-bar">
-    <button class="icon-btn" (click)="toggle()">☕</button>
-    <button class="icon-btn" (click)="newChat()">＋</button>
+    <button 
+      class="icon-btn expand-btn" 
+      (click)="toggle()" 
+      title="Expand sidebar"
+    >
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <path d="M9 18l6-6-6-6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button 
+      class="icon-btn new-btn" 
+      (click)="newChat()" 
+      title="New Chai Chat"
+    >
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <path d="M12 5v14M5 12h14" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
   </div>
 
-  <!-- EXPANDED -->
+  <!-- EXPANDED VIEW -->
   <div *ngIf="!collapsed" class="expanded">
+
     <div class="header">
-      <span class="title">☕ ChaiGPT</span>
-      <button class="icon-btn" (click)="toggle()">←</button>
+      <button 
+        class="icon-btn collapse-btn" 
+        (click)="toggle()" 
+        title="Collapse sidebar"
+      >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path d="M15 18l-6-6 6-6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
     </div>
 
-    <button class="new-chat" (click)="newChat()">＋ New Chai</button>
+    <button class="new-chat" (click)="newChat()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <path d="M12 5v14M5 12h14" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span>New Chai</span>
+      <span class="sparkle">✨</span>
+    </button>
+
+    <div class="section-title">
+      <span class="icon">💭</span>
+      <span>Quick Starts</span>
+    </div>
 
     <div class="topics">
       <div
         class="topic"
-        *ngFor="let topic of topics"
+        *ngFor="let topic of topics; let i = index"
         (click)="selectTopic(topic.prompt)"
+        [style.animation-delay]="i * 0.05 + 's'"
       >
-        {{ topic.title }}
+        <span class="topic-icon">{{ getTopicIcon(i) }}</span>
+        <span class="topic-text">{{ topic.title }}</span>
       </div>
     </div>
+
+    <div class="footer">
+      <div class="tip">
+        <span class="tip-icon">💡</span>
+        <span class="tip-text">Pro tip: Try "Kadak" mode for spicier responses!</span>
+      </div>
+    </div>
+
   </div>
 </div>

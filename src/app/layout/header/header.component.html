@@ -1,35 +1,86 @@
-<header class="header">
+<header class="chai-header">
   <div class="left">
-    <!-- HAMBURGER (mobile only) -->
     <button
       class="icon-btn mobile-only"
       (click)="menuClick.emit()"
       aria-label="Open menu"
     >
-      ☰
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <path d="M3 12h18M3 6h18M3 18h18" stroke-width="2" stroke-linecap="round"/>
+      </svg>
     </button>
 
-    <span class="title">☕ ChaiGPT</span>
+    <!-- BRAND with animated chai cup -->
+    <div class="brand">
+      <span class="logo">
+        <span class="cup"></span>
+        <span class="steam steam-1"></span>
+        <span class="steam steam-2"></span>
+        <span class="steam steam-3"></span>
+      </span>
+      <span class="title gradient-text">ChaiGPT</span>
+    </div>
   </div>
 
   <div class="right">
     <!-- Spice selector -->
-    <select
-      class="spice-select"
-      (change)="setSpice($any($event.target).value)"
-    >
-      <option value="mild">🌶️ Mild</option>
-      <option value="medium" selected>🌶️🌶️ Medium</option>
-      <option value="kadak">🌶️🌶️🌶️ Kadak</option>
-    </select>
+    <div class="chai-strength">
+      <button
+        class="pill"
+        [class.active]="isActive('mild')"
+        (click)="setSpice('mild')"
+      >
+        <span class="emoji">☁️</span>
+        <span class="label">Mild</span>
+      </button>
 
-    <!-- Theme toggle -->
-    <button
-      class="theme-btn"
+      <button
+        class="pill"
+        [class.active]="isActive('medium')"
+        (click)="setSpice('medium')"
+      >
+        <span class="emoji">🔥</span>
+        <span class="label">Medium</span>
+      </button>
+
+      <button
+        class="pill"
+        [class.active]="isActive('kadak')"
+        (click)="setSpice('kadak')"
+      >
+        <span class="emoji">⚡</span>
+        <span class="label">Kadak</span>
+      </button>
+    </div>
+
+    <!-- Theme toggle with sun/moon icons -->
+    <button 
+      class="icon-btn theme-toggle" 
       (click)="theme.toggleTheme()"
-      title="Toggle theme"
+      [attr.aria-label]="theme.isDark() ? 'Switch to light mode' : 'Switch to dark mode'"
     >
-      🌓
+      <!-- Sun Icon (shown in dark mode) -->
+      <svg 
+        *ngIf="theme.isDark()"
+        class="icon-sun"
+        viewBox="0 0 24 24" 
+        fill="none" 
+        stroke="currentColor"
+      >
+        <circle cx="12" cy="12" r="4" stroke-width="2"/>
+        <path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41m11.32-11.32l1.41-1.41" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      
+      <!-- Moon Icon (shown in light mode) -->
+      <svg 
+        *ngIf="!theme.isDark()"
+        class="icon-moon"
+        viewBox="0 0 24 24" 
+        fill="none" 
+        stroke="currentColor"
+      >
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
     </button>
   </div>
 </header>

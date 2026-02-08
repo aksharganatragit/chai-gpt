@@ -1,186 +1,459 @@
 /* =========================
-   ChaiGPT – Global Styles ☕
+   ☕ ChaiGPT – Warm Chai Colors
+   Cozy • Soft • Inviting
    ========================= */
 
-/* RESET */
+/* =========================
+   GOOGLE FONTS
+========================= */
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Quicksand:wght@400;500;600;700&display=swap');
+
+/* =========================
+   RESET
+========================= */
 *,
 *::before,
 *::after {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-* {
-  overflow-anchor: none;
+/* =========================
+   🍵 LIGHT THEME (Warm Chai Shop)
+========================= */
+:root,
+:root.light-theme,
+[data-theme='light'],
+body[data-theme='light'] {
+  /* Backgrounds - Soft Chai Colors */
+  --bg-primary: #FAF7F2;          /* Soft cream background */
+  --bg-secondary: #FFFBF7;        /* Pure cream white */
+  --bg-tertiary: #F5EFE6;         /* Light chai latte */
+  --bg-sidebar: #F8F4EE;          /* Warm sidebar */
+  --bg-hover: #F0E8DB;            /* Hover beige */
+  --bg-input: #FFFFFF;
+  --bg-card: #FFFBF7;
+  
+  /* Text - Warm Browns */
+  --text-primary: #3E2723;        /* Deep espresso brown */
+  --text-secondary: #6D4C41;      /* Medium brown */
+  --text-tertiary: #8D6E63;       /* Light cocoa */
+  --text-placeholder: #BCAAA4;    /* Soft taupe */
+  
+  /* Chai Brand Colors - Earthy & Warm */
+  --chai-primary: #D4A574;        /* Warm caramel */
+  --chai-secondary: #C19A6B;      /* Golden brown */
+  --chai-accent: #B8956A;         /* Tan */
+  --chai-dark: #5D4037;           /* Dark chocolate */
+  --chai-light: #EFEBE9;          /* Light cream */
+  
+  /* Message Bubbles - Soft & Gentle */
+  --msg-user-bg: #D4A574;         /* Warm caramel */
+  --msg-user-text: #FFFFFF;
+  --msg-ai-bg: #F5EFE6;          /* Soft beige */
+  --msg-ai-text: #3E2723;
+  --msg-border: #E8DCC8;         /* Subtle border */
+  
+  /* Accents - Subtle & Warm */
+  --accent-primary: #C19A6B;      /* Warm tan */
+  --accent-secondary: #D4A574;    /* Caramel */
+  --accent-tertiary: #A1887F;     /* Dusty rose-brown */
+  
+  /* Gradients - Smooth & Creamy */
+  --gradient-chai: linear-gradient(135deg, #D4A574 0%, #C19A6B 100%);
+  --gradient-warm: linear-gradient(135deg, #F5EFE6 0%, #E8DCC8 100%);
+  --gradient-subtle: linear-gradient(180deg, #FFFBF7 0%, #FAF7F2 100%);
+  
+  /* System Colors - Muted */
+  --color-success: #81C784;
+  --color-info: #64B5F6;
+  --color-warning: #FFB74D;
+  --color-error: #E57373;
+  
+  /* Borders & Shadows - Soft */
+  --border-light: #E8DCC8;
+  --border-medium: #D7CCC8;
+  --border-dark: #BCAAA4;
+  
+  --shadow-sm: 0 2px 4px rgba(62, 39, 35, 0.06);
+  --shadow-md: 0 4px 12px rgba(62, 39, 35, 0.08);
+  --shadow-lg: 0 8px 24px rgba(62, 39, 35, 0.10);
+  --shadow-xl: 0 12px 40px rgba(62, 39, 35, 0.12);
 }
 
-/* -------------------------
-   Root Variables
--------------------------- */
+/* =========================
+   🌙 DARK THEME (Evening Chai)
+========================= */
+:root.dark-theme,
+[data-theme='dark'],
+body[data-theme='dark'] {
+  /* Backgrounds - Deep & Cozy */
+  --bg-primary: #1C1410;          /* Deep brown-black */
+  --bg-secondary: #251B17;        /* Rich dark brown */
+  --bg-tertiary: #2D221C;         /* Warm charcoal */
+  --bg-sidebar: #181210;          /* Darker sidebar */
+  --bg-hover: #352821;            /* Hover brown */
+  --bg-input: #251B17;
+  --bg-card: #2D221C;
+  
+  /* Text - Cream Tones */
+  --text-primary: #F5EFE6;        /* Soft cream */
+  --text-secondary: #D7CCC8;      /* Light tan */
+  --text-tertiary: #BCAAA4;       /* Muted beige */
+  --text-placeholder: #8D6E63;    /* Dim brown */
+  
+  /* Chai Colors - Warmer for Dark */
+  --chai-primary: #D4A574;        /* Caramel */
+  --chai-secondary: #C19A6B;      /* Golden tan */
+  --chai-accent: #B8956A;         /* Warm tan */
+  --chai-dark: #8D6E63;           /* Light brown */
+  --chai-light: #3E2723;          /* Dark espresso */
+  
+  /* Message Bubbles */
+  --msg-user-bg: #D4A574;         /* Warm caramel */
+  --msg-user-text: #1C1410;       /* Dark text */
+  --msg-ai-bg: #2D221C;          /* Deep brown */
+  --msg-ai-text: #F5EFE6;
+  --msg-border: #3E2723;
+  
+  /* Accents */
+  --accent-primary: #D4A574;
+  --accent-secondary: #C19A6B;
+  --accent-tertiary: #A1887F;
+  
+  /* Gradients */
+  --gradient-chai: linear-gradient(135deg, #D4A574 0%, #C19A6B 100%);
+  --gradient-warm: linear-gradient(135deg, #2D221C 0%, #3E2723 100%);
+  --gradient-subtle: linear-gradient(180deg, #251B17 0%, #1C1410 100%);
+  
+  /* System Colors */
+  --color-success: #81C784;
+  --color-info: #64B5F6;
+  --color-warning: #FFB74D;
+  --color-error: #E57373;
+  
+  /* Borders & Shadows */
+  --border-light: #3E2723;
+  --border-medium: #4E342E;
+  --border-dark: #6D4C41;
+  
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+  --shadow-xl: 0 12px 48px rgba(0, 0, 0, 0.6);
+}
+
+/* =========================
+   📐 LAYOUT VARIABLES
+========================= */
 :root {
-  /* layout heights */
+  /* Heights */
   --header-height: 64px;
-  --input-height: 56px;
+  --input-height: 72px;
+  --sidebar-width: 260px;
+  --sidebar-collapsed: 56px;
+  
+  /* Keyboard */
+  --keyboard-offset: 0px;
 
-  /* keyboard handling */
-  --keyboard-offset: 0px; // 🔥 REQUIRED
+  /* Typography */
+  --font-main: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-heading: 'Quicksand', 'DM Sans', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+  
+  /* Font Sizes */
+  --text-xs: 0.75rem;     /* 12px */
+  --text-sm: 0.875rem;    /* 14px */
+  --text-base: 1rem;      /* 16px */
+  --text-lg: 1.125rem;    /* 18px */
+  --text-xl: 1.25rem;     /* 20px */
+  --text-2xl: 1.5rem;     /* 24px */
+  --text-3xl: 2rem;       /* 32px */
 
-  /* fonts */
-  --font-main: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-    Roboto, Oxygen, Ubuntu, Cantarell, "Helvetica Neue", Arial, sans-serif;
-
-  /* spacing */
+  /* Spacing */
   --space-xs: 4px;
   --space-sm: 8px;
   --space-md: 16px;
   --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
 
-  /* radius */
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 14px;
+  /* Border Radius - Softer */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-full: 9999px;
 
-  /* transitions */
-  --transition-fast: 0.15s ease;
-  --transition-base: 0.25s ease;
+  /* Transitions - Smooth */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 350ms cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* Z-index */
+  --z-base: 1;
+  --z-dropdown: 1000;
+  --z-sticky: 1020;
+  --z-fixed: 1030;
+  --z-modal: 1040;
+  --z-tooltip: 1060;
 }
 
-/* -------------------------
-   Theme Variables
--------------------------- */
-body[data-theme='light'] {
-  --bg-primary: #f7f3ee;
-  --bg-secondary: #ffffff;
-  --bg-sidebar: #efe6d8;
-
-  --text-primary: #1f1f1f;
-  --text-secondary: #555;
-
-  --border-color: #ddd;
-}
-
-body[data-theme='dark'] {
-  --bg-primary: #1b1b1b;
-  --bg-secondary: #242424;
-  --bg-sidebar: #141414;
-
-  --text-primary: #f5f5f5;
-  --text-secondary: #aaa;
-
-  --border-color: #333;
-}
-
-/* -------------------------
-   Base Body
--------------------------- */
-html,
-body {
+/* =========================
+   BASE STYLES
+========================= */
+html {
   height: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
+  height: 100dvh;
   margin: 0;
   font-family: var(--font-main);
+  font-size: var(--text-base);
+  line-height: 1.6;
+  
   background: var(--bg-primary);
   color: var(--text-primary);
-
-  /* 🔥 KEY FIX */
-  height: 100dvh;
+  
   overflow: hidden;
+  
+  /* Smooth theme transitions */
+  transition: background-color 400ms ease,
+              color 400ms ease;
 }
 
-/* -------------------------
-   Header (FIXED)
--------------------------- */
-.app-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-
-  height: var(--header-height);
-  background: var(--bg-secondary);
-  border-bottom: 1px solid var(--border-color);
-
-  display: flex;
-  align-items: center;
-  padding: 0 var(--space-md);
-
-  z-index: 1000;
-}
-
-/* -------------------------
-   Messages Area (SCROLL)
--------------------------- */
-.messages-container {
-  position: fixed;
-  left: 0;
-  right: 0;
-
-  /* 🔥 THIS FIXES "FIRST MESSAGE UNDER HEADER" */
-  top: var(--header-height);
-
-  /* 🔥 THIS FIXES KEYBOARD + INPUT BAR */
-  bottom: calc(var(--input-height) + var(--keyboard-offset));
-
-  overflow-y: auto;
-  padding: var(--space-md);
-
-  background: var(--bg-primary);
-}
-
-/* -------------------------
-   Message Bubble
--------------------------- */
-.message {
-  background: var(--bg-secondary);
-  color: var(--text-primary);
-  padding: var(--space-sm) var(--space-md);
-  border-radius: var(--radius-md);
-  margin-bottom: var(--space-sm);
-}
-
-/* -------------------------
-   Input Bar (FIXED)
--------------------------- */
-.chat-input {
-  position: fixed;
-  left: 0;
-  right: 0;
-
-  bottom: var(--keyboard-offset);
-
-  height: var(--input-height);
-  background: var(--bg-secondary);
-  border-top: 1px solid var(--border-color);
-
-  display: flex;
-  align-items: center;
-  padding: 0 var(--space-md);
-
-  z-index: 1000;
-}
-
-.chat-input input {
-  width: 100%;
-  height: 40px;
-  border-radius: 20px;
-  border: 1px solid var(--border-color);
-  padding: 0 var(--space-md);
-  outline: none;
-  background: transparent;
+/* =========================
+   TYPOGRAPHY
+========================= */
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  line-height: 1.2;
   color: var(--text-primary);
 }
 
-/* -------------------------
-   Scrollbars (desktop)
--------------------------- */
-@media (min-width: 768px) {
-  ::-webkit-scrollbar {
-    width: 8px;
+h1 { font-size: var(--text-3xl); }
+h2 { font-size: var(--text-2xl); }
+h3 { font-size: var(--text-xl); }
+h4 { font-size: var(--text-lg); }
+
+p {
+  margin: 0 0 var(--space-md) 0;
+}
+
+a {
+  color: var(--accent-primary);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+  
+  &:hover {
+    color: var(--accent-secondary);
   }
+}
 
-  ::-webkit-scrollbar-thumb {
-    background: var(--border-color);
-    border-radius: 4px;
+code, pre {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  background: var(--bg-tertiary);
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+}
+
+/* =========================
+   SCROLLBARS
+========================= */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-medium);
+  border-radius: var(--radius-full);
+  border: 2px solid var(--bg-primary);
+  
+  &:hover {
+    background: var(--border-dark);
+  }
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-medium) transparent;
+}
+
+/* =========================
+   ANIMATIONS
+========================= */
+
+/* Steam Rise (gentle) */
+@keyframes steamRise {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 0.7;
+  }
+  100% {
+    transform: translateY(-20px) scale(1.3);
+    opacity: 0;
+  }
+}
+
+/* Gentle Float */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+/* Soft Glow */
+@keyframes softGlow {
+  0%, 100% {
+    box-shadow: 0 0 8px rgba(212, 165, 116, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 16px rgba(212, 165, 116, 0.5);
+  }
+}
+
+/* Fade In Up */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Wiggle */
+@keyframes wiggle {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-3deg); }
+  75% { transform: rotate(3deg); }
+}
+
+/* =========================
+   UTILITY CLASSES
+========================= */
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animate-fade-in {
+  animation: fadeInUp 0.5s ease-out;
+}
+
+/* Gradient Text */
+.gradient-text {
+  background: var(--gradient-chai);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Cards */
+.card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-base);
+  
+  &:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+  }
+}
+
+/* Buttons */
+.btn {
+  padding: var(--space-sm) var(--space-lg);
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  font-family: var(--font-heading);
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  transition: all var(--transition-base);
+  
+  &:hover {
+    transform: translateY(-2px);
+  }
+  
+  &-primary {
+    background: var(--gradient-chai);
+    color: white;
+    box-shadow: var(--shadow-md);
+    
+    &:hover {
+      box-shadow: var(--shadow-lg);
+    }
+  }
+}
+
+/* Input */
+input, textarea {
+  font-family: var(--font-main);
+  font-size: var(--text-base);
+  color: var(--text-primary);
+  background: var(--bg-input);
+  border: 2px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: var(--space-sm) var(--space-md);
+  outline: none;
+  transition: all var(--transition-fast);
+  
+  &::placeholder {
+    color: var(--text-placeholder);
+  }
+  
+  &:focus {
+    border-color: var(--chai-primary);
+    box-shadow: 0 0 0 3px rgba(212, 165, 116, 0.15);
+  }
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 768px) {
+  :root {
+    --header-height: 56px;
+    --input-height: 64px;
+  }
+}
+
+/* =========================
+   REDUCED MOTION
+========================= */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }

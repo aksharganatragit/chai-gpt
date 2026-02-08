@@ -2,6 +2,7 @@ import { Component, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ThemeService } from '../../core/services/theme.service';
 import { SpiceService } from '../../core/services/spice.service';
+import { SpiceLevel } from '../../core/models/spice.type';
 
 @Component({
   selector: 'app-header',
@@ -18,7 +19,12 @@ export class HeaderComponent {
     public spice: SpiceService
   ) {}
 
-  setSpice(level: string) {
-    this.spice.setLevel(level as any);
+  setSpice(level: SpiceLevel) {
+    this.spice.setLevel(level);
+  }
+
+  // helper for template (clean + readable)
+  isActive(level: SpiceLevel): boolean {
+    return this.spice.getLevel() === level;
   }
 }

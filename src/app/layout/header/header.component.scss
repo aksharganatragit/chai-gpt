@@ -1,58 +1,323 @@
-.header {
-  height: 56px;
-  padding: 0 12px;
+/* =========================
+   ☕ Warm Chai Header
+   Soft & Inviting
+========================= */
+
+:host {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-sticky);
+}
+
+/* =========================
+   HEADER SHELL
+========================= */
+.chai-header {
+  height: var(--header-height);
+  padding: 0 var(--space-lg);
+
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid var(--border-color);
-  background: var(--bg-primary);
+  gap: var(--space-md);
+
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-light);
+  box-shadow: var(--shadow-sm);
+
+  transition: all var(--transition-base);
 }
 
+/* =========================
+   LAYOUT
+========================= */
 .left,
 .right {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: var(--space-md);
 }
 
+/* =========================
+   BRAND (Animated Chai Cup)
+========================= */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  cursor: pointer;
+  transition: transform var(--transition-fast);
+
+  &:hover {
+    transform: scale(1.02);
+  }
+}
+
+/* Custom chai cup icon */
+.logo {
+  position: relative;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+/* Cup - Warm Caramel */
+.cup {
+  width: 24px;
+  height: 18px;
+  border-radius: 0 0 10px 10px;
+  background: linear-gradient(135deg, #D4A574 0%, #C19A6B 100%);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15);
+  position: relative;
+  
+  /* Handle */
+  &::before {
+    content: '';
+    position: absolute;
+    right: -8px;
+    top: 4px;
+    width: 8px;
+    height: 10px;
+    border: 2px solid var(--chai-primary);
+    border-left: none;
+    border-radius: 0 6px 6px 0;
+  }
+  
+  /* Liquid inside */
+  &::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    right: 2px;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 0 0 6px 6px;
+  }
+}
+
+/* Steam particles - Gentle */
+.steam {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--chai-primary);
+  opacity: 0;
+  animation: steamRise 3s ease-in-out infinite;
+}
+
+.steam-1 {
+  left: 8px;
+  bottom: 18px;
+  animation-delay: 0s;
+}
+
+.steam-2 {
+  left: 14px;
+  bottom: 18px;
+  animation-delay: 1s;
+}
+
+.steam-3 {
+  left: 20px;
+  bottom: 18px;
+  animation-delay: 2s;
+}
+
+/* Title */
 .title {
-  font-weight: 600;
-  font-size: 1rem;
-  white-space: nowrap;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: var(--text-xl);
+  letter-spacing: -0.5px;
+  color: var(--chai-primary);
 }
 
-/* ICON BUTTON */
+/* =========================
+   BUTTONS
+========================= */
 .icon-btn {
-  background: none;
-  border: none;
-  font-size: 1.2rem;
-  cursor: pointer;
-}
+  height: 40px;
+  width: 40px;
+  min-width: 40px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-light);
 
-/* SPICE SELECT */
-.spice-select {
-  border-radius: 6px;
-  padding: 4px 6px;
-  border: 1px solid var(--border-color);
-  background: var(--bg-secondary);
+  background: var(--bg-tertiary);
   color: var(--text-primary);
-}
-
-/* THEME BUTTON */
-.theme-btn {
-  background: none;
-  border: none;
   cursor: pointer;
-  font-size: 1.1rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transition: all var(--transition-base);
+
+  svg {
+    width: 20px;
+    height: 20px;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  &:hover {
+    background: var(--bg-hover);
+    border-color: var(--border-medium);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
 }
 
-/* MOBILE ONLY */
+/* Theme toggle - Warm Glow */
+.theme-toggle {
+  background: var(--gradient-chai);
+  color: white;
+  border-color: transparent;
+
+  &:hover {
+    animation: softGlow 2s ease-in-out infinite;
+    transform: translateY(-1px);
+  }
+
+  .icon-sun,
+  .icon-moon {
+    animation: fadeInUp 0.3s ease-out;
+  }
+}
+
+/* =========================
+   CHAI STRENGTH - Softer Pills
+========================= */
+.chai-strength {
+  display: flex;
+  gap: var(--space-xs);
+  padding: 4px;
+  border-radius: var(--radius-md);
+
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-light);
+}
+
+.pill {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+
+  padding: 8px 12px;
+  border-radius: calc(var(--radius-md) - 2px);
+  border: none;
+
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  font-family: var(--font-heading);
+  cursor: pointer;
+
+  transition: all var(--transition-base);
+
+  .emoji {
+    font-size: 16px;
+    transition: transform var(--transition-fast);
+  }
+
+  .label {
+    opacity: 0.85;
+    transition: opacity var(--transition-fast);
+  }
+
+  &:hover {
+    background: var(--bg-hover);
+    transform: translateY(-1px);
+
+    .emoji {
+      transform: scale(1.1);
+    }
+
+    .label {
+      opacity: 1;
+    }
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+/* ACTIVE STATE - Warm & Soft */
+.pill.active {
+  background: var(--gradient-chai);
+  color: white;
+  box-shadow: var(--shadow-sm);
+  animation: fadeInUp 0.3s ease-out;
+
+  .emoji {
+    transform: scale(1.05);
+  }
+
+  .label {
+    opacity: 1;
+    font-weight: 700;
+  }
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+  }
+}
+
+/* =========================
+   MOBILE
+========================= */
 .mobile-only {
   display: none;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 768px) {
+  .chai-header {
+    padding: 0 var(--space-md);
+  }
+
   .mobile-only {
-    display: inline-flex;
+    display: flex;
+  }
+
+  .chai-strength .label {
+    display: none;
+  }
+
+  .pill {
+    padding: var(--space-xs);
+    min-width: 36px;
+    justify-content: center;
+  }
+
+  .title {
+    font-size: var(--text-lg);
+  }
+
+  .icon-btn {
+    height: 36px;
+    width: 36px;
+    min-width: 36px;
+  }
+}
+
+/* =========================
+   REDUCED MOTION
+========================= */
+@media (prefers-reduced-motion: reduce) {
+  .steam {
+    animation: none;
+    opacity: 0.3;
   }
 }
