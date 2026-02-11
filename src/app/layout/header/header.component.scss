@@ -7,6 +7,8 @@
   position: sticky;
   top: 0;
   z-index: var(--z-sticky);
+  width: 100%;
+  max-width: 100vw; /* Prevent overflow */
 }
 
 /* =========================
@@ -15,6 +17,8 @@
 .chai-header {
   height: var(--header-height);
   padding: 0 var(--space-lg);
+  width: 100%;
+  max-width: 100%; /* Prevent overflow */
 
   display: flex;
   align-items: center;
@@ -26,6 +30,8 @@
   box-shadow: var(--shadow-sm);
 
   transition: all var(--transition-base);
+  
+  overflow: hidden; /* Prevent children from overflowing */
 }
 
 /* =========================
@@ -36,6 +42,16 @@
   display: flex;
   align-items: center;
   gap: var(--space-md);
+  flex-shrink: 0; /* Prevent shrinking */
+}
+
+.left {
+  flex: 1;
+  min-width: 0; /* Allow text truncation */
+}
+
+.right {
+  flex-shrink: 0; /* Don't let right section shrink */
 }
 
 /* =========================
@@ -47,6 +63,7 @@
   gap: var(--space-sm);
   cursor: pointer;
   transition: transform var(--transition-fast);
+  flex-shrink: 0; /* Don't let logo shrink */
 
   &:hover {
     transform: scale(1.02);
@@ -58,6 +75,7 @@
   position: relative;
   width: 32px;
   height: 32px;
+  min-width: 32px; /* Prevent shrinking */
   display: flex;
   align-items: flex-end;
   justify-content: center;
@@ -134,6 +152,12 @@
   font-size: var(--text-xl);
   letter-spacing: -0.5px;
   color: var(--chai-primary);
+  
+  /* Prevent overflow */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
 }
 
 /* =========================
@@ -142,7 +166,7 @@
 .icon-btn {
   height: 40px;
   width: 40px;
-  min-width: 40px;
+  min-width: 40px; /* Prevent shrinking */
   border-radius: var(--radius-md);
   border: 1px solid var(--border-light);
 
@@ -205,6 +229,8 @@
 
   background: var(--bg-tertiary);
   border: 1px solid var(--border-light);
+  
+  flex-shrink: 0; /* Don't let strength selector shrink */
 }
 
 .pill {
@@ -228,11 +254,13 @@
   .emoji {
     font-size: 16px;
     transition: transform var(--transition-fast);
+    flex-shrink: 0; /* Don't let emoji shrink */
   }
 
   .label {
     opacity: 0.85;
     transition: opacity var(--transition-fast);
+    white-space: nowrap; /* Prevent text wrapping */
   }
 
   &:hover {
@@ -285,14 +313,25 @@
 @media (max-width: 768px) {
   .chai-header {
     padding: 0 var(--space-md);
+    gap: var(--space-sm); /* Reduce gap on mobile */
   }
 
   .mobile-only {
     display: flex;
   }
+  
+  .left,
+  .right {
+    gap: var(--space-sm); /* Reduce gap on mobile */
+  }
 
   .chai-strength .label {
     display: none;
+  }
+
+  .chai-strength {
+    gap: 4px;
+    padding: 3px;
   }
 
   .pill {
@@ -309,6 +348,83 @@
     height: 36px;
     width: 36px;
     min-width: 36px;
+  }
+  
+  .logo {
+    width: 28px;
+    height: 28px;
+    min-width: 28px;
+  }
+  
+  .brand {
+    gap: 6px;
+  }
+}
+
+/* Extra small screens */
+@media (max-width: 375px) {
+  .chai-header {
+    padding: 0 8px;
+    gap: 6px;
+  }
+  
+  .left,
+  .right {
+    gap: 6px;
+  }
+  
+  .icon-btn {
+    height: 32px;
+    width: 32px;
+    min-width: 32px;
+  }
+  
+  .theme-toggle {
+    height: 32px;
+    width: 32px;
+    min-width: 32px;
+    
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+  
+  .chai-strength {
+    gap: 2px;
+    padding: 2px;
+  }
+  
+  .pill {
+    min-width: 32px;
+    padding: 6px;
+    
+    .emoji {
+      font-size: 14px;
+    }
+  }
+  
+  .title {
+    font-size: var(--text-base);
+    max-width: 120px; /* Limit title width on very small screens */
+  }
+  
+  .logo {
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+  }
+  
+  .cup {
+    width: 20px;
+    height: 15px;
+    
+    &::before {
+      right: -6px;
+      width: 6px;
+      height: 8px;
+      border-width: 1.5px;
+    }
   }
 }
 
