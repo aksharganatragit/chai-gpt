@@ -1,14 +1,40 @@
 <div class="language-page">
-  <h1>ChaiGPT ☕</h1>
-  <p>Choose how you want your chai-time gossip</p>
+  <!-- Animated Chai Cup Logo -->
+  <div class="chai-logo">
+    <div class="cup-wrapper">
+      <div class="cup">
+        <div class="liquid"></div>
+        <div class="handle"></div>
+      </div>
+      <div class="steam steam-1"></div>
+      <div class="steam steam-2"></div>
+      <div class="steam steam-3"></div>
+    </div>
+  </div>
 
+  <!-- Title with Gradient -->
+  <div class="title-section">
+    <h1 class="gradient-text">ChaiGPT</h1>
+    <p class="subtitle">Choose your chai flavor 🍵</p>
+  </div>
+
+  <!-- Language Options -->
   <div class="options">
-    <button (click)="choose('hinglish')">
-      Hinglish 😏
+    <button class="lang-btn hinglish" (click)="choose('hinglish')">
+      <span class="emoji">😏</span>
+      <span class="lang-name">Hinglish</span>
+      <span class="lang-desc">Desi vibes</span>
     </button>
 
-    <button (click)="choose('english')">
-      English ☕
+    <button class="lang-btn english" (click)="choose('english')">
+      <span class="emoji">☕</span>
+      <span class="lang-name">English</span>
+      <span class="lang-desc">Classic style</span>
     </button>
+  </div>
+
+  <!-- Playful Footer -->
+  <div class="footer-text">
+    <p>✨ Your AI chai companion awaits</p>
   </div>
 </div>
