@@ -542,6 +542,25 @@
     align-items: center;
     gap: var(--space-sm);
   }
+
+  /* subtle one-liner credit — plain text, not a pill */
+  p.credit {
+    margin-top: 0.6rem;
+    max-width: 34rem;
+    display: block;
+    padding: 0 1rem;
+
+    background: none;
+    border: none;
+    box-shadow: none;
+
+    font-size: clamp(0.7rem, 1.2vh, 0.8rem);
+    font-weight: 400;
+    line-height: 1.4;
+    text-align: center;
+    color: var(--text-tertiary);
+    opacity: 0.75;
+  }
 }
 
 .footer-glow {
