@@ -6,16 +6,28 @@
       [class.user]="msg.sender === 'user'"
       [class.chai]="msg.sender === 'chai'"
     >
-      <!-- Message text -->
-      {{ msg.text }}
+      <!-- Message text: ChaiGPT replies are Markdown → render as HTML;
+           user messages stay plain text -->
+      <span
+        *ngIf="msg.sender === 'chai'; else plainText"
+        class="md-body"
+        [innerHTML]="msg.text | markdown"
+      ></span>
+      <ng-template #plainText>{{ msg.text }}</ng-template>
 
-      <!-- 🔗 Read more link (only for chai messages) -->
-      <div
-        *ngIf="msg.sender === 'chai' && msg.allowReadMore"
-        class="read-more"
-        (click)="openInChatGPT(msg.text)"
-      >
-        🔗 Read more →
+      <!-- Action buttons (only for ChaiGPT messages) -->
+      <div *ngIf="msg.sender === 'chai'" class="msg-actions">
+        <button type="button" (click)="copyMessage(msg)">
+          {{ copiedId === msg.id ? '✅ Copied' : '📋 Copy' }}
+        </button>
+        <button type="button" (click)="shareMessage(msg)">🔗 Share</button>
+        <button
+          *ngIf="msg.allowReadMore"
+          type="button"
+          (click)="openInChatGPT(msg.text)"
+        >
+          ↗ Open
+        </button>
       </div>
     </div>
 
@@ -39,7 +51,17 @@
       (keydown)="handleKeydown($event)"
     ></textarea>
 
-    <button type="submit">➤</button>
+    <!-- Send when idle, Stop while generating -->
+    <button *ngIf="!isGenerating" type="submit" aria-label="Send">➤</button>
+    <button
+      *ngIf="isGenerating"
+      type="button"
+      class="stop-btn"
+      (click)="stopGenerating()"
+      aria-label="Stop"
+    >
+      ⏹
+    </button>
   </form>
 </div>
 <div *ngIf="showConfirm" class="confirm-overlay">

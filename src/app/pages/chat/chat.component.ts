@@ -11,11 +11,14 @@ import { FormsModule } from '@angular/forms';
 import { Message } from '../../core/models/message.model';
 import { ChaiEngineService } from '../../core/services/chai-engine.service';
 import { ChatSessionService } from '../../core/services/chat-session.service';
+import { LlmService } from '../../core/services/llm.service';
+import { SpiceService } from '../../core/services/spice.service';
+import { MarkdownPipe } from '../../shared/pipes/markdown.pipe';
 
 @Component({
   selector: 'app-chat',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, MarkdownPipe],
   templateUrl: './chat.component.html',
   styleUrl: './chat.component.scss',
 })
@@ -25,15 +28,20 @@ export class ChatComponent implements AfterViewInit, OnDestroy {
   messages: Message[] = [];
   inputText = '';
   isTyping = false;
+  isGenerating = false;        // true while waiting for / streaming a reply
+  copiedId: string | null = null;
   showConfirm = false;
 
   private viewport?: VisualViewport;
   private viewportHandler?: () => void;
   private streamTimer?: number;
+  private abortController?: AbortController;
 
   constructor(
     private chaiEngine: ChaiEngineService,
-    private session: ChatSessionService
+    private session: ChatSessionService,
+    private llm: LlmService,
+    private spice: SpiceService
   ) {
     this.session.actionStream$.subscribe(action => {
       if (action.type === 'new-chat') {
@@ -86,7 +94,8 @@ export class ChatComponent implements AfterViewInit, OnDestroy {
   /* ===============================
      CHAT FLOW
      =============================== */
-  sendMessage() {
+  async sendMessage() {
+    if (this.isGenerating) return;       // ignore new sends while busy
     if (!this.inputText.trim()) return;
 
     this.session.markConversationStarted();
@@ -102,7 +111,68 @@ export class ChatComponent implements AfterViewInit, OnDestroy {
     });
 
     this.scrollToBottom();
-    this.streamReply(this.chaiEngine.getReply(userText));
+
+    // Build the FULL history (memory) from every message so far, in the
+    // shape the LLM expects: our 'chai' sender maps to the model's 'assistant'.
+    const history = this.messages.map(m => ({
+      role: (m.sender === 'user' ? 'user' : 'assistant') as 'user' | 'assistant',
+      content: m.text,
+    }));
+
+    this.isGenerating = true;
+    this.isTyping = true;
+    this.abortController = new AbortController();
+
+    try {
+      const reply = await this.llm.getReply(
+        history,
+        this.spice.getLevel(),
+        this.abortController.signal
+      );
+      this.streamReply(reply);
+    } catch (err: any) {
+      this.isTyping = false;
+      if (err?.name === 'AbortError') {
+        // user pressed Stop before the reply arrived — just bail quietly
+        this.isGenerating = false;
+        return;
+      }
+      this.streamReply('Arre yaar, kuch gadbad ho gayi ☕ — thodi der baad try karna.');
+    }
+  }
+
+  /** Stop button: cancel the request AND halt the streaming animation. */
+  stopGenerating() {
+    this.abortController?.abort();              // cancel in-flight request (if any)
+    if (this.streamTimer) clearInterval(this.streamTimer); // stop word streaming
+    this.isTyping = false;
+    this.isGenerating = false;
+  }
+
+  /** Copy a reply to the clipboard, with a brief "Copied" confirmation. */
+  async copyMessage(msg: Message) {
+    try {
+      await navigator.clipboard.writeText(msg.text);
+      this.copiedId = msg.id;
+      window.setTimeout(() => {
+        if (this.copiedId === msg.id) this.copiedId = null;
+      }, 1500);
+    } catch {
+      /* clipboard not available — ignore */
+    }
+  }
+
+  /** Share a reply via the native share sheet (mobile), else fall back to copy. */
+  async shareMessage(msg: Message) {
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: 'ChaiGPT', text: msg.text });
+      } catch {
+        /* user dismissed the share sheet — ignore */
+      }
+    } else {
+      await this.copyMessage(msg);
+    }
   }
 
   private streamReply(text: string) {
@@ -124,6 +194,7 @@ export class ChatComponent implements AfterViewInit, OnDestroy {
       if (i >= words.length) {
         clearInterval(this.streamTimer);
         this.isTyping = false;
+        this.isGenerating = false;
         return;
       }
 

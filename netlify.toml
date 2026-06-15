@@ -1,0 +1,18 @@
+# Netlify configuration for ChaiGPT (Angular frontend + serverless backend)
+
+[build]
+  command = "npm run build"
+  publish = "dist/chai-gpt/browser"   # Angular 19 build output
+  functions = "netlify/functions"      # serverless functions live here
+
+# Pretty URL: frontend calls /api/chat → routes to the serverless function
+[[redirects]]
+  from = "/api/chat"
+  to = "/.netlify/functions/chat"
+  status = 200
+
+# SPA fallback: every other route serves index.html so Angular routing works
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
