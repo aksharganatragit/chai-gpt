@@ -1,0 +1,6 @@
+# Allow all search engines to crawl the whole site
+User-agent: *
+Allow: /
+
+# Point crawlers to the sitemap
+Sitemap: https://chaigpt.co.in/sitemap.xml
