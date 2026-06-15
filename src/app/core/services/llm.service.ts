@@ -16,11 +16,12 @@ export interface LlmMessage {
 @Injectable({ providedIn: 'root' })
 export class LlmService {
   // Local dev → talk to server/server.js on :3001.
-  // Production (Netlify) → same-domain /api/chat, which routes to the serverless function.
+  // Production (Netlify) → call the serverless function's native URL directly.
+  // (Going direct avoids the SPA _redirects catch-all that was swallowing /api/chat.)
   private readonly apiUrl =
     location.hostname === 'localhost' || location.hostname === '127.0.0.1'
       ? 'http://localhost:3001/api/chat'
-      : '/api/chat';
+      : '/.netlify/functions/chat';
 
   /** Send the whole history + spice level, get back the model's reply text. */
   async getReply(
